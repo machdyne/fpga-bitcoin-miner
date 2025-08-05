@@ -15,7 +15,7 @@ TOP_TEST_FILES = ./testbenches/mock_pll.v ./src/uart_comm.v ./src/uart.v ./src/f
 
 all:
 	# clean old build data
-	rm $(BUILD)/*
+	rm -f $(BUILD)/*
 	
 	# if build folder doesn't exist, create it
 	mkdir -p $(BUILD)
@@ -24,7 +24,7 @@ all:
 	yosys -p "connect_rpc -exec python3 ./src/ecp5pll.py; synth_ecp5 -noflatten -json $(BUILD)/$(NAME).json -top top" $(FILES)
 
 	# Place and route using nextpnr
-	nextpnr-ecp5 --top top --quiet --json $(BUILD)/$(NAME).json --lpf src/ecp5evn.lpf --textcfg $(BUILD)/$(NAME)_out.config --um5g-85k --freq 50 --package CABGA381 --log $(BUILD)/$(NAME)-nextpnr.log
+	nextpnr-ecp5 --top top --json $(BUILD)/$(NAME).json --lpf src/lakritz.lpf --textcfg $(BUILD)/$(NAME)_out.config --25k --package CABGA256 --freq 64 --log $(BUILD)/$(NAME)-nextpnr.log
 
 	# Convert to bitstream using EcpPack
 	ecppack --svf-rowsize 100000 --svf $(BUILD)/$(NAME).svf $(BUILD)/$(NAME)_out.config $(BUILD)/$(NAME)_out.bit

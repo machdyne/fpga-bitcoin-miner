@@ -9,7 +9,7 @@ module fpgaminer_top (
 	input wire reset,
 	output reg [31:0] golden_nonce = 32'd0,
 	output reg new_golden_nonce = 1'd0, // whether we found a hash
-	output wire [7:0] leds
+	output wire [0:0] leds
 );
 	// determines how unrolled the SHA-256 calculations are. 
     // a setting of 0 will completely unroll the calculations, 
@@ -93,13 +93,13 @@ module fpgaminer_top (
 	
 	// just to know our program is running
     assign leds[0] = !wait_for_work; // if we negate it, we'll get the true value out
-    assign leds[1] = !reset;
-	assign leds[2] = !nonce[0];
-	assign leds[3] = !golden_nonce_found;
-	assign leds[4] = !new_golden_nonce;
-	assign leds[5] = !feedback;
-	assign leds[6] = !cnt;
-	assign leds[7] = !(hash_clk == sha_clk);
+//    assign leds[1] = !reset;
+//	assign leds[2] = !nonce[0];
+//	assign leds[3] = !golden_nonce_found;
+//	assign leds[4] = !new_golden_nonce;
+//	assign leds[5] = !feedback;
+//	assign leds[6] = !cnt;
+//	assign leds[7] = !(hash_clk == sha_clk);
 
 	always @ (posedge hash_clk)
 	begin

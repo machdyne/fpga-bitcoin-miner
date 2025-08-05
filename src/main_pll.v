@@ -1,10 +1,3 @@
-/**																
- *									
- * Given input frequency:        12.000 MHz				
- * Requested output frequency:  100.000 MHz				
- * Achieved output frequency:   100.500 MHz				
- */									
-									
 module pll(								
 	input  clock_in,						
 	output clock_out,						
@@ -12,8 +5,9 @@ module pll(
 );								
 									
     ECP5_PLL
-    #( .IN_MHZ(12)
-     , .OUT0_MHZ(50)
+    #( .IN_MHZ(48)
+     , .OUT0_MHZ(64)
+    // , .OUT0_MHZ(50)
      ) pll
      ( .clkin(clock_in)
      , .reset(1'b0)

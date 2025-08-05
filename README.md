@@ -1,5 +1,7 @@
 # fpga bitcoin miner
 
+*This is a fork for Machdyne computers. Currently only [Lakritz](https://github.com/machdyne/lakritz) is supported.*
+
 Adaptation of the https://github.com/progranism/Open-Source-FPGA-Bitcoin-Miner for the Lattice ECP5 evaluation board (LFE5UM5G-85F-8BG381). It has been tested on the actual board with the `pc-comm` script found in the `helpers directory`. Tests are provided for most of the modules.
 
 There's a great video on youtube explaining how sha256 works and it can serve as a great reference to this implementation: https://www.youtube.com/watch?v=f9EbD6iY9zI
@@ -29,6 +31,12 @@ Both should return either pong or the info you can find harcoded in the `uart_co
 ## Manual yosys inspection
 - `read -vlog2k src/*.v`
 - `proc;`
+
+## Test setup
+
+```
+...
+```
 
 ## Todos
 

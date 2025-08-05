@@ -2,12 +2,13 @@ module top (
 	input wire CLK,
 	input wire RX,
 	output wire TX,
-    output [7:0] led
+    output [0:0] led
 );
 
     parameter baud_rate = 9600;
-    parameter sys_clk_freq = 12000000;
-    parameter LOOP_LOG2 = 5;
+    parameter sys_clk_freq = 48000000;
+    parameter LOOP_LOG2 = 4;
+    //parameter LOOP_LOG2 = 5;
 
 
     wire [95:0] work_data; // 12 bytes of the rightmost 511 bits of the header (time, merkleroot, difficulty)

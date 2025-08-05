@@ -1,0 +1,14 @@
+# https://github.com/SymbiFlow/prjtrellis/blob/master/examples/soc_ecp5_evn/ecp5evn.lpf
+
+LOCATE COMP "CLK" SITE "A7";
+IOBUF PORT "CLK" IO_TYPE=LVCMOS33;
+
+LOCATE COMP "led[0]" SITE "A2";
+
+IOBUF PORT "led[0]" IO_TYPE=LVCMOS25;
+
+LOCATE COMP "TX" SITE "B12";
+LOCATE COMP "RX" SITE "B13";
+
+IOBUF PORT "TX" IO_TYPE=LVCMOS33;
+IOBUF PORT "RX" IO_TYPE=LVCMOS33;
