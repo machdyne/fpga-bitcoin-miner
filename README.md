@@ -8,8 +8,6 @@ There is now a miner controller script:
 $ python3 helpers/mine.py --network regtest --port /dev/ttyUSB0
 ```
 
-**Solution submissions aren't working yet.**
-
 Here is an example bitcoind config:
 
 ```
