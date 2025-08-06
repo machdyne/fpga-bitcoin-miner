@@ -7,8 +7,10 @@ module fpgaminer_top (
 	input wire [31:0] nonce_min, // minimum nonce for job
 	input wire [31:0] nonce_max, // maximum nonce for job
 	input wire reset,
+	output wire [31:0] current_nonce,
 	output reg [31:0] golden_nonce = 32'd0,
 	output reg new_golden_nonce = 1'd0, // whether we found a hash
+   output reg [31:0] nonce = 32'd0,
 	output wire [0:0] leds
 );
 	// determines how unrolled the SHA-256 calculations are. 
@@ -31,7 +33,6 @@ module fpgaminer_top (
 	localparam [31:0] GOLDEN_NONCE_OFFSET = (32'd1 << (7 - LOOP_LOG2)) + 32'd1;
 
 	reg [511:0] data = 512'd0; // a block header is 640 bits
-    reg [31:0] nonce = 32'd0;
 
 	wire [255:0] hash; // hash of the 2nd 511 bits of the block header
     wire [255:0] hash2; // hash of the first round of block header hash

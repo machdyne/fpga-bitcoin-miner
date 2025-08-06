@@ -12,6 +12,7 @@ module top (
 
 
     wire [95:0] work_data; // 12 bytes of the rightmost 511 bits of the header (time, merkleroot, difficulty)
+	wire [31:0] nonce; // current nonce
 	wire [31:0] nonce_min; // minimum nonce for job
 	wire [31:0] nonce_max; // maximum nonce for job
 	wire [255:0] midstate; // midstate hash, hash of the leftmost 511 bits
@@ -37,6 +38,7 @@ module top (
         .reset(rx_new_work),
         .golden_nonce(golden_nonce),
 	    .new_golden_nonce(new_golden_nonce), // whether we found a hash
+       .nonce(nonce),
         .nonce_min(nonce_min), // minimum nonce for job
 	    .nonce_max(nonce_max), // maximum nonce for job
         .leds(led)
@@ -49,6 +51,7 @@ module top (
 		.comm_clk (CLK),
         .golden_nonce(golden_nonce),
 	    .new_golden_nonce(new_golden_nonce), // whether we found a hash
+       .nonce(nonce),
         .hash_clk (hash_clk),
 		.rx_serial (RX),
 		.tx_serial (TX),

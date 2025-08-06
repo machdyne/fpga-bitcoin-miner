@@ -1,6 +1,49 @@
 # fpga bitcoin miner
 
-*This is a fork for Machdyne computers. Currently only [Lakritz](https://github.com/machdyne/lakritz) is supported.*
+*This is a work-in-progress fork of [fpga-bitcoin-miner](https://github.com/xtrinch/fpga-bitcoin-miner) targetting Machdyne FPGA computers. Currently only [Lakritz](https://github.com/machdyne/lakritz) is supported.*
+
+There is now a miner controller script:
+
+```
+$ python3 helpers/mine.py --network regtest --port /dev/ttyUSB0
+```
+
+**Solution submissions aren't working yet.**
+
+Here is an example bitcoind config:
+
+```
+# Network settings
+regtest=1
+#testnet=1  # Set to 1 for testnet
+server=1
+daemon=1
+
+# Data directory
+datadir=/home/bitcoin/.bitcoin
+
+# Connection settings
+maxconnections=8
+
+# RPC settings (optional)
+rpcuser=test
+rpcpassword=test123
+
+[test]
+rpcallowip=127.0.0.1
+rpcport=18332
+rpcbind=127.0.0.1
+```
+
+For regtest you need to generate the first 101 blocks:
+
+```
+bitcoin-cli -regtest generatetoaddress 101 $(bitcoin-cli -regtest getnewaddress)
+```
+
+This has only been tested on regtest, it may break on testnet/mainnet.
+
+## Previous notes
 
 Adaptation of the https://github.com/progranism/Open-Source-FPGA-Bitcoin-Miner for the Lattice ECP5 evaluation board (LFE5UM5G-85F-8BG381). It has been tested on the actual board with the `pc-comm` script found in the `helpers directory`. Tests are provided for most of the modules.
 

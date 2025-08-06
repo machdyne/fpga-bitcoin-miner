@@ -15,6 +15,7 @@ module uart_comm (
 	input wire comm_clk, // UART clock domain
 	input wire hash_clk, // hash clock domain
 	input wire rx_serial,
+	input wire [31:0] nonce,
 	input wire [31:0] golden_nonce,
 	input wire new_golden_nonce, // whether we found a hash, is hash_clk synchronized
 	output wire tx_serial,
@@ -182,7 +183,8 @@ module uart_comm (
 					end
 					else if (msg_type == MSG_INFO && msg_length == 8) begin // header length always 8
 						msg_type <= MSG_INFO;
-						msg_data[(MSG_BUF_LEN*8)-1:(MSG_BUF_LEN*8)-1-63] <= system_info;
+						msg_data[(MSG_BUF_LEN*8)-1:(MSG_BUF_LEN*8)-1-63] <=
+							{ system_info[63:32], nonce[31:0] };
 						msg_length <= 8'd16;
 					end
 					else if (msg_type == MSG_PUSH_JOB && msg_length == (JOB_SIZE/8 + 8)) // job size + 8 byte header
