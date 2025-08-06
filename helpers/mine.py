@@ -1075,7 +1075,7 @@ class FPGAMinerController:
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(description="FPGA Bitcoin Miner Controller")
-    parser.add_argument('--network', '-n', choices=['regtest'], default='regtest')
+    parser.add_argument('--network', '-n', choices=['regtest','testnet','mainnet'], default='regtest')
     parser.add_argument('--port', '-p', default='/dev/ttyUSB0')
     parser.add_argument('--baud', '-b', type=int, default=9600)
     parser.add_argument('--test-only', '-t', action='store_true')
