@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
 """
-FPGA Bitcoin Miner Controller - FULLY FIXED VERSION
+FPGA Bitcoin Miner Controller
 Copyright (c) 2025 Lone Dynamics Corporation. All rights reserved.
-
-FIXES:
-1. Proper BIP 34 coinbase height encoding
-2. Correct block hash verification
-3. Fixed endianness issues in block construction
-4. Proper midstate calculation for FPGA
-5. Clean code structure without duplicates
 """
 
 import serial
@@ -566,46 +559,6 @@ class FPGAMinerController:
             result += block[::-1]
         return result
     
-    def test_both_endianness_approaches(self, block_template: Dict) -> None:
-        """Test both endianness approaches to determine which is correct"""
-        print("\n🧪 TESTING BOTH ENDIANNESS APPROACHES:")
-        print("=" * 50)
-        
-        block_height = block_template["height"]
-        coinbase_tx = self.create_coinbase_tx(block_height, 0)
-        other_txs = [bytes.fromhex(tx["data"]) for tx in block_template.get("transactions", []) if "data" in tx]
-        all_txs = [coinbase_tx] + other_txs
-        merkle_root = self.calculate_merkle_root(all_txs)
-        header = self.create_block_header(block_template, nonce=0, merkle_root=merkle_root)
-        
-        print(f"📦 Original header: {binascii.hexlify(header).decode()}")
-        
-        # Approach 1: No reversal (current)
-        print("\n🔸 APPROACH 1: No 4-byte reversal")
-        midstate1 = sha256_midstate(header[:64])
-        work_data1 = header[64:76]
-        print(f"   Midstate: {binascii.hexlify(midstate1).decode()}")
-        print(f"   Work data: {binascii.hexlify(work_data1).decode()}")
-        
-        # Approach 2: 4-byte reversal for both
-        print("\n🔸 APPROACH 2: 4-byte reversal for both midstate and work data")
-        reversed_header = self.reverse_4byte_blocks(header)
-        midstate2 = sha256_midstate(reversed_header[:64])
-        work_data2 = reversed_header[64:76]
-        print(f"   Reversed header: {binascii.hexlify(reversed_header).decode()}")
-        print(f"   Midstate: {binascii.hexlify(midstate2).decode()}")
-        print(f"   Work data: {binascii.hexlify(work_data2).decode()}")
-        
-        # Approach 3: Mixed (midstate from original, work data from reversed)
-        print("\n🔸 APPROACH 3: Mixed - midstate from original, work data from reversed")
-        midstate3 = sha256_midstate(header[:64])
-        work_data3 = reversed_header[64:76]
-        print(f"   Midstate: {binascii.hexlify(midstate3).decode()}")
-        print(f"   Work data: {binascii.hexlify(work_data3).decode()}")
-        
-        print("\n💡 Try each approach and see which one the FPGA accepts!")
-        print("=" * 50)
-
     def verify_solution(self, header: bytes, nonce: int, target: int) -> bool:
         """Verify that a nonce produces a valid solution with correct endianness"""
         # Create header with the nonce
@@ -652,9 +605,6 @@ class FPGAMinerController:
         print(f"🏗️  Block height: {block_height}")
         print(f"🌳 Merkle root: {binascii.hexlify(merkle_root).decode()}")
 
-        # 6. CRITICAL: Use 4-byte reversal approach (Approach 2) since genesis test passed
-        print(f"🔄 Using APPROACH 2: 4-byte reversal for both midstate and work data")
-        
         # Reverse header in 4-byte blocks for FPGA compatibility
         reversed_header = self.reverse_4byte_blocks(header)
         
@@ -1077,10 +1027,6 @@ class FPGAMinerController:
                 print(f"🎯 Target: {block_template['target']}")
                 print(f"⏰ Time: {block_template['curtime']}")
                 
-                # Debug: Test endianness approaches on first job
-                if job_counter == 1:
-                    self.test_both_endianness_approaches(block_template)
-                
                 # Prepare and send work
                 work_data = self.prepare_fpga_work(block_template, 0x00000000, 0xFFFFFFFF)
                 
@@ -1128,24 +1074,13 @@ class FPGAMinerController:
 
 def main():
     """Main function"""
-    parser = argparse.ArgumentParser(description="FULLY FIXED FPGA Bitcoin Miner Controller")
+    parser = argparse.ArgumentParser(description="FPGA Bitcoin Miner Controller")
     parser.add_argument('--network', '-n', choices=['regtest'], default='regtest')
     parser.add_argument('--port', '-p', default='/dev/ttyUSB0')
     parser.add_argument('--baud', '-b', type=int, default=9600)
     parser.add_argument('--test-only', '-t', action='store_true')
     
     args = parser.parse_args()
-    
-    print("🚀 FULLY FIXED FPGA Bitcoin Miner Controller")
-    print("=" * 55)
-    print("✅ COMPLETE FIXES:")
-    print("   - BIP 34 compliant coinbase (block height)")
-    print("   - Proper SHA-256 midstate calculation")
-    print("   - Fixed block hash verification")
-    print("   - Correct endianness handling")
-    print("   - Block submission with target verification")
-    print("   - Clean code structure without duplicates")
-    print("=" * 55)
     
     controller = FPGAMinerController(
         network=args.network,
