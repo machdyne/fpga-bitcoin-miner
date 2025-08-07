@@ -39,7 +39,7 @@ For regtest you need to generate the first 101 blocks:
 bitcoin-cli -regtest generatetoaddress 101 $(bitcoin-cli -regtest getnewaddress)
 ```
 
-This has only been tested on regtest, it may break on testnet/mainnet.
+This has only been tested on regtest, in order to work on testnet/mainnet it will need configurable difficulty.
 
 ## Previous notes
 
