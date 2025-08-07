@@ -1046,7 +1046,7 @@ class FPGAMinerController:
                     print(f"\n🎉 IMMEDIATE SOLUTION! Nonce: {result:08x}")
                     if self.submit_block(block_template, result):
                         print("🏆 BLOCK SUBMITTED AND REWARDS CLAIMED!")
-                        return
+                        sys.exit(0)
                 else:
                     print("✅ Work sent successfully, FPGA is mining...")
                     
